@@ -1,0 +1,15 @@
+# Dependencies and package-manager cache
+node_modules/
+.pnpm-store/
+
+# Build and test outputs
+dist/
+coverage/
+
+# Local environment and logs
+.env
+*.log
+
+# Local agent/runtime files
+.agents/skills/
+.codex
