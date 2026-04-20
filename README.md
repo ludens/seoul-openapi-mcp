@@ -20,6 +20,12 @@ pnpm test
 pnpm build
 ```
 
+## 제공 도구
+
+| 도구 | 설명 | 주요 입력 |
+| --- | --- | --- |
+| `seoul_get_air_quality_by_district` | `ListAirQualityByDistrictService`에서 서울시 실시간 자치구별 최신 대기환경 현황을 조회합니다. | 선택 `districtCode`, 선택 `districtName` |
+
 ## MCP 연결
 
 빌드 후 stdio transport로 실행합니다.
