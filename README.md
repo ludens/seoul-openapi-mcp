@@ -56,6 +56,18 @@ pnpm test
 pnpm build
 ```
 
+MCP Inspector로 테스트 서버를 띄울 때:
+
+```bash
+pnpm inspect
+```
+
+WSL에서 Windows 브라우저로 접속해야 할 때:
+
+```bash
+pnpm inspect:wsl
+```
+
 ## 로컬 빌드 실행
 
 빌드 후 stdio transport로 실행합니다.

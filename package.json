@@ -32,6 +32,8 @@
     "build": "tsc -p tsconfig.json",
     "check": "tsc -p tsconfig.json --noEmit",
     "dev": "tsx src/index.ts",
+    "inspect": "pnpm build && set -a && . ./.env && set +a && npx @modelcontextprotocol/inspector node dist/index.js",
+    "inspect:wsl": "pnpm build && set -a && . ./.env && set +a && WSL_IP=$(hostname -I | awk '{print $1}') && TOKEN=$(node -e \"console.log(require('crypto').randomBytes(32).toString('hex'))\") && echo \"Open: http://$WSL_IP:6274/?MCP_PROXY_AUTH_TOKEN=$TOKEN\\&MCP_PROXY_FULL_ADDRESS=http%3A%2F%2F$WSL_IP%3A6277\" && HOST=0.0.0.0 ALLOWED_ORIGINS=\"http://$WSL_IP:6274,http://localhost:6274\" MCP_PROXY_FULL_ADDRESS=\"http://$WSL_IP:6277\" MCP_PROXY_AUTH_TOKEN=\"$TOKEN\" MCP_AUTO_OPEN_ENABLED=false npx @modelcontextprotocol/inspector node dist/index.js",
     "lint": "eslint .",
     "prepack": "pnpm build",
     "prepublishOnly": "pnpm check && pnpm test && pnpm build",
