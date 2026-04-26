@@ -37,6 +37,7 @@ MCP 클라이언트 설정에 아래 서버를 추가합니다. `command`는 `np
 | --- | --- | --- |
 | `seoul_get_air_quality_by_district` | `ListAirQualityByDistrictService`에서 서울시 실시간 자치구별 최신 대기환경 현황을 조회합니다. | 선택 `districtCode`, 선택 `districtName` |
 | `seoul_get_subway_realtime_station_arrival` | `realtimeStationArrival`에서 서울시 지하철역 실시간 도착정보를 조회합니다. | 필수 `stationName`, 선택 `startIndex`, 선택 `endIndex` |
+| `seoul_search_good_price_shops` | 저장소에 포함된 static JSON에서 서울 착한가격업소와 상품 가격을 검색합니다. API를 호출하지 않습니다. | 선택 `query`, `districtName`, `industryCode`, `industryName`, `itemName`, `maxItemPrice`, `limit`, `offset` |
 
 ## 로컬 개발
 
@@ -86,3 +87,6 @@ node dist/index.js
 - `src/services/seoulOpenApiClient.ts`: 서울 OpenAPI 공통 클라이언트
 - `src/tools/`: OpenAPI별 MCP 도구
 - `src/schemas/`: Zod 입력/출력 스키마
+- `apis/AirQualityByDistrict/`: 서울시 실시간 자치구별 대기환경 현황 문서와 코드표
+- `apis/RealtimeStationArrival/`: 서울시 지하철 실시간 도착정보 문서와 역 정보
+- `data/PriceModelStore/`: 착한가격업소 현황과 상품목록 static JSON
