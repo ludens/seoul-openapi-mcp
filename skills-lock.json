@@ -4,7 +4,7 @@
     "mcp-builder": {
       "source": "anthropics/skills",
       "sourceType": "github",
-      "computedHash": "fc68038c900eb801f73ff96130c9f9dba533cc94212ed8435833242f196dedcf"
+      "computedHash": "826e46adf81e1372282e205c34e1a2ee876e72148007726e4a2512599d2fef7b"
     },
     "split-commit": {
       "source": "ludens/my-skills",
