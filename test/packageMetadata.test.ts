@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, test } from "vitest";
 
 const packageJson = JSON.parse(readFileSync("package.json", "utf8")) as {
+  version?: string;
   bin?: Record<string, string>;
   publishConfig?: { access?: string };
   repository?: { type?: string; url?: string };
@@ -10,6 +11,10 @@ const packageJson = JSON.parse(readFileSync("package.json", "utf8")) as {
 };
 
 describe("npm package metadata", () => {
+  test("uses semver-compatible CalVer for package releases", () => {
+    expect(packageJson.version).toBe("2026.426.0");
+  });
+
   test("publishes a public executable package for npx usage", () => {
     expect(packageJson.bin).toEqual({
       "seoul-openapi-mcp": "dist/index.js",
