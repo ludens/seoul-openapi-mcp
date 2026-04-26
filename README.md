@@ -26,7 +26,31 @@ pnpm build
 | --- | --- | --- |
 | `seoul_get_air_quality_by_district` | `ListAirQualityByDistrictService`에서 서울시 실시간 자치구별 최신 대기환경 현황을 조회합니다. | 선택 `districtCode`, 선택 `districtName` |
 
-## MCP 연결
+## npx로 실행
+
+npm에 게시된 패키지는 별도 설치 없이 `npx`로 실행할 수 있습니다.
+
+```bash
+SEOUL_OPENAPI_KEY=발급받은_인증키 npx seoul-openapi-mcp-server
+```
+
+MCP 클라이언트 설정 예시:
+
+```json
+{
+  "mcpServers": {
+    "seoul-openapi": {
+      "command": "npx",
+      "args": ["seoul-openapi-mcp-server"],
+      "env": {
+        "SEOUL_OPENAPI_KEY": "발급받은_인증키"
+      }
+    }
+  }
+}
+```
+
+## 로컬 MCP 연결
 
 빌드 후 stdio transport로 실행합니다.
 
