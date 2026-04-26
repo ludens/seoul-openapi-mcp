@@ -111,3 +111,95 @@ export type AirQualityByDistrictInput = z.infer<
 export type AirQualityByDistrictOutput = z.infer<
   typeof AirQualityByDistrictOutputSchema
 >;
+
+export const SubwayRealtimeStationArrivalInputShape = {
+  stationName: z
+    .string()
+    .transform((value) => value.trim())
+    .refine((value) => value.length > 0, {
+      message: "stationName must contain a station name",
+    })
+    .describe("Required subway station name. Examples: 강남, 서울, 홍대입구."),
+  startIndex: z
+    .number()
+    .int()
+    .min(0)
+    .max(1000)
+    .default(0)
+    .describe("Optional Seoul subway OpenAPI start index. Defaults to 0."),
+  endIndex: z
+    .number()
+    .int()
+    .min(0)
+    .max(1000)
+    .default(20)
+    .describe("Optional Seoul subway OpenAPI end index. Defaults to 20."),
+};
+
+export const SubwayRealtimeStationArrivalInputSchema = z
+  .object(SubwayRealtimeStationArrivalInputShape)
+  .strict()
+  .superRefine((value, ctx) => {
+    if (value.endIndex < value.startIndex) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["endIndex"],
+        message: "endIndex must be greater than or equal to startIndex",
+      });
+    }
+
+    if (value.endIndex - value.startIndex > 1000) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["endIndex"],
+        message: "subway realtime arrival requests can fetch at most 1000 rows",
+      });
+    }
+  });
+
+export const SubwayRealtimeStationArrivalRowSchema = z
+  .object({
+    subwayId: z.string().optional().describe("지하철호선ID입니다. 예: 1002는 2호선입니다."),
+    updnLine: z.string().optional().describe("상하행선구분입니다. 예: 상행/내선, 하행/외선."),
+    trainLineNm: z.string().optional().describe("도착지방면입니다."),
+    statnFid: z.string().optional().describe("이전지하철역ID입니다."),
+    statnTid: z.string().optional().describe("다음지하철역ID입니다."),
+    statnId: z.string().optional().describe("지하철역ID입니다."),
+    statnNm: z.string().optional().describe("지하철역명입니다."),
+    trnsitCo: z.string().optional().describe("환승노선수입니다."),
+    ordkey: z.string().optional().describe("도착예정열차순번입니다."),
+    subwayList: z.string().optional().describe("연계호선ID 목록입니다."),
+    statnList: z.string().optional().describe("연계지하철역ID 목록입니다."),
+    btrainSttus: z.string().optional().describe("열차종류입니다. 예: 급행, ITX, 일반, 특급."),
+    barvlDt: z.string().optional().describe("열차도착예정시간입니다. 단위는 초입니다."),
+    btrainNo: z.string().optional().describe("열차번호입니다."),
+    bstatnId: z.string().optional().describe("종착지하철역ID입니다."),
+    bstatnNm: z.string().optional().describe("종착지하철역명입니다."),
+    recptnDt: z.string().optional().describe("열차도착정보를 생성한 시각입니다."),
+    arvlMsg2: z.string().optional().describe("첫번째 도착 메시지입니다. 예: 도착, 출발, 진입."),
+    arvlMsg3: z.string().optional().describe("두번째 도착 메시지입니다."),
+    arvlCd: z.string().optional().describe("도착코드입니다. 0 진입, 1 도착, 2 출발, 99 운행중 등."),
+    lstcarAt: z.string().optional().describe("막차여부입니다. 1은 막차, 0은 아님입니다."),
+  })
+  .passthrough()
+  .describe("서울시 지하철 실시간 도착정보 원본 row입니다.");
+
+export const SubwayRealtimeStationArrivalOutputSchema = z.object({
+  serviceName: z
+    .literal("realtimeStationArrival")
+    .describe("조회한 서울 지하철 OpenAPI 서비스명입니다."),
+  startIndex: z.number().int().describe("서울 지하철 OpenAPI 요청 시작 인덱스입니다."),
+  endIndex: z.number().int().describe("서울 지하철 OpenAPI 요청 종료 인덱스입니다."),
+  stationName: z.string().describe("조회한 지하철역명입니다."),
+  rows: z
+    .array(SubwayRealtimeStationArrivalRowSchema)
+    .describe("응답에서 추출한 지하철 실시간 도착정보 row 목록입니다."),
+  data: z.unknown().describe("서울 지하철 OpenAPI 원본 JSON 응답입니다."),
+});
+
+export type SubwayRealtimeStationArrivalInput = z.infer<
+  typeof SubwayRealtimeStationArrivalInputSchema
+>;
+export type SubwayRealtimeStationArrivalOutput = z.infer<
+  typeof SubwayRealtimeStationArrivalOutputSchema
+>;

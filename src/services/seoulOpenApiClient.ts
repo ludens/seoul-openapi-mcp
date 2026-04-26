@@ -1,6 +1,7 @@
 export interface SeoulOpenApiClientOptions {
   apiKey: string;
   baseUrl: string;
+  minStartIndex?: number;
   fetch?: typeof fetch;
 }
 
@@ -22,17 +23,21 @@ export type JsonValue =
 export class SeoulOpenApiClient {
   readonly #apiKey: string;
   readonly #baseUrl: string;
+  readonly #minStartIndex: number;
   readonly #fetch: typeof fetch;
 
   constructor(options: SeoulOpenApiClientOptions) {
     this.#apiKey = options.apiKey;
     this.#baseUrl = options.baseUrl.replace(/\/+$/, "");
+    this.#minStartIndex = options.minStartIndex ?? 1;
     this.#fetch = options.fetch ?? fetch;
   }
 
   buildUrl(options: SeoulOpenApiUrlOptions): URL {
-    if (options.startIndex < 1) {
-      throw new Error("startIndex must be greater than or equal to 1");
+    if (options.startIndex < this.#minStartIndex) {
+      throw new Error(
+        `startIndex must be greater than or equal to ${this.#minStartIndex}`,
+      );
     }
 
     if (options.endIndex < options.startIndex) {

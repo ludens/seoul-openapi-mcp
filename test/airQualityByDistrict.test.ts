@@ -4,7 +4,6 @@ import { z } from "zod";
 import { AirQualityByDistrictOutputSchema } from "../src/schemas/seoulOpenApiSchemas.js";
 import { SeoulOpenApiClient } from "../src/services/seoulOpenApiClient.js";
 import { fetchAirQualityByDistrict } from "../src/tools/airQualityByDistrictTool.js";
-import { loadConfig } from "../src/config.js";
 
 function loadEnvFile(): NodeJS.ProcessEnv {
   if (!existsSync(".env")) {
@@ -47,10 +46,15 @@ describe("fetchAirQualityByDistrict", () => {
   });
 
   test("fetches latest district air-quality rows from the real Seoul API using .env", async () => {
-    const config = loadConfig(loadEnvFile());
+    const env = loadEnvFile();
+    const apiKey = env.SEOUL_OPENAPI_KEY?.trim();
+    if (!apiKey) {
+      throw new Error("Set SEOUL_OPENAPI_KEY before running this test.");
+    }
+
     const client = new SeoulOpenApiClient({
-      apiKey: config.seoulOpenApi.apiKey,
-      baseUrl: config.seoulOpenApi.baseUrl,
+      apiKey,
+      baseUrl: "http://openapi.seoul.go.kr:8088",
     });
 
     const output = await fetchAirQualityByDistrict(client, {

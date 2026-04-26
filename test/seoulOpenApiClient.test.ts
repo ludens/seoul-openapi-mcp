@@ -33,4 +33,23 @@ describe("SeoulOpenApiClient", () => {
       }),
     ).toThrow("endIndex must be greater than or equal to startIndex");
   });
+
+  test("builds Seoul subway OpenAPI URLs when zero-based pagination is enabled", () => {
+    const client = new SeoulOpenApiClient({
+      apiKey: "test-key",
+      baseUrl: "http://swopenAPI.seoul.go.kr/api/subway",
+      minStartIndex: 0,
+    });
+
+    const url = client.buildUrl({
+      serviceName: "realtimeStationArrival",
+      startIndex: 0,
+      endIndex: 5,
+      pathParams: ["서울"],
+    });
+
+    expect(url.toString()).toBe(
+      "http://swopenapi.seoul.go.kr/api/subway/test-key/json/realtimeStationArrival/0/5/%EC%84%9C%EC%9A%B8/",
+    );
+  });
 });
