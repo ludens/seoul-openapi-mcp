@@ -17,7 +17,7 @@ describe("npm package metadata", () => {
     expect(packageJson.publishConfig).toEqual({ access: "public" });
     expect(packageJson.repository).toEqual({
       type: "git",
-      url: "git+ssh://git@github.com/ludens/seoul-mcp.git",
+      url: "git+ssh://git@github.com/ludens/seoul-openapi-mcp.git",
     });
     expect(packageJson.scripts?.prepublishOnly).toBe(
       "pnpm check && pnpm test && pnpm build",

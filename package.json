@@ -12,12 +12,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/ludens/seoul-mcp.git"
+    "url": "git+ssh://git@github.com/ludens/seoul-openapi-mcp.git"
   },
   "bugs": {
-    "url": "https://github.com/ludens/seoul-mcp/issues"
+    "url": "https://github.com/ludens/seoul-openapi-mcp/issues"
   },
-  "homepage": "https://github.com/ludens/seoul-mcp#readme",
+  "homepage": "https://github.com/ludens/seoul-openapi-mcp#readme",
   "bin": {
     "seoul-openapi-mcp": "dist/index.js"
   },
