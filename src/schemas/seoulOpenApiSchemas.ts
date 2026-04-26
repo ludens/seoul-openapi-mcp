@@ -50,10 +50,10 @@ export const AirQualityDistrictNameSchema = z
 
 export const AirQualityByDistrictInputShape = {
   districtCode: AirQualityDistrictCodeSchema.optional().describe(
-    "Optional district filter code from MSRSTN_PBADMS_CD. Omit to fetch all districts.",
+    "Optional district filter code from apis/AirQualityByDistrict/MSRSTN_PBADMS_CD.csv. Omit to fetch all districts.",
   ),
   districtName: AirQualityDistrictNameSchema.optional().describe(
-    "Optional district filter name from MSRSTN_PBADMS_CD.csv. Omit to fetch all districts.",
+    "Optional district filter name from apis/AirQualityByDistrict/MSRSTN_PBADMS_CD.csv. Omit to fetch all districts.",
   ),
 };
 
@@ -203,3 +203,115 @@ export type SubwayRealtimeStationArrivalInput = z.infer<
 export type SubwayRealtimeStationArrivalOutput = z.infer<
   typeof SubwayRealtimeStationArrivalOutputSchema
 >;
+
+const GoodPriceShopIndustryCodes = [
+  "001",
+  "002",
+  "003",
+  "004",
+  "005",
+  "006",
+  "007",
+  "008",
+  "009",
+  "010",
+  "011",
+  "012",
+  "013",
+] as const;
+
+export const GoodPriceShopInputShape = {
+  query: z
+    .string()
+    .trim()
+    .min(1)
+    .optional()
+    .describe(
+      "Optional keyword matched against shop name, address, description, pride text, directions, and item names.",
+    ),
+  districtName: AirQualityDistrictNameSchema.optional().describe(
+    "Optional Seoul district name filter. Examples: 송파구, 양천구, 관악구.",
+  ),
+  industryCode: z
+    .enum(GoodPriceShopIndustryCodes)
+    .optional()
+    .describe(
+      "Optional industry category code. Examples: 001 한식, 003 경양식/일식, 005 이미용, 007 세탁.",
+    ),
+  industryName: z
+    .string()
+    .trim()
+    .min(1)
+    .optional()
+    .describe("Optional industry category name filter. Examples: 한식, 이미용, 기타외식업."),
+  itemName: z
+    .string()
+    .trim()
+    .min(1)
+    .optional()
+    .describe("Optional item/product name filter. Examples: 아메리카노, 커트, 김밥."),
+  maxItemPrice: z
+    .number()
+    .int()
+    .min(0)
+    .optional()
+    .describe(
+      "Optional maximum item price in KRW. Requires a shop to have at least one item at or below this price.",
+    ),
+  limit: z
+    .number()
+    .int()
+    .min(1)
+    .max(2000)
+    .default(20)
+    .describe("Maximum number of shops to return. Defaults to 20."),
+  offset: z
+    .number()
+    .int()
+    .min(0)
+    .default(0)
+    .describe("Number of matched shops to skip for pagination. Defaults to 0."),
+};
+
+export const GoodPriceShopInputSchema = z
+  .object(GoodPriceShopInputShape)
+  .strict();
+
+export const GoodPriceShopItemSchema = z.object({
+  name: z.string().describe("상품명입니다."),
+  price: z.number().int().describe("상품가격(일반)(원)입니다."),
+});
+
+export const GoodPriceShopRowSchema = z.object({
+  shopId: z.string().describe("업소아이디입니다."),
+  name: z.string().describe("업소명입니다."),
+  industryCode: z.string().describe("분류코드입니다."),
+  industryName: z.string().describe("분류코드명입니다."),
+  address: z.string().describe("업소 주소입니다."),
+  phone: z.string().describe("업소 전화번호입니다."),
+  directions: z.string().describe("찾아오시는 길입니다."),
+  info: z.string().describe("업소정보입니다."),
+  pride: z.string().describe("자랑거리입니다."),
+  recommendationCount: z.number().int().describe("추천수입니다."),
+  photoUrl: z.string().describe("업소 사진 URL입니다."),
+  baseYm: z.string().describe("기준년월입니다."),
+  items: z
+    .array(GoodPriceShopItemSchema)
+    .describe("업소의 상품/가격 목록입니다. 상품 필터가 있으면 매칭 상품만 포함합니다."),
+});
+
+export const GoodPriceShopOutputSchema = z.object({
+  serviceName: z
+    .literal("ListPriceModelStoreService")
+    .describe("참조한 서울 열린데이터 서비스명입니다."),
+  dataSource: z.literal("static-json").describe("API 호출 없이 static JSON을 참조합니다."),
+  datasetDate: z.literal("2026-04-21").describe("참조 JSON 파일 기준일입니다."),
+  totalCount: z.number().int().describe("페이지 적용 전 매칭 업소 수입니다."),
+  returnedCount: z.number().int().describe("반환한 업소 수입니다."),
+  limit: z.number().int().describe("요청 limit입니다."),
+  offset: z.number().int().describe("요청 offset입니다."),
+  rows: z.array(GoodPriceShopRowSchema).describe("검색된 착한가격업소 목록입니다."),
+});
+
+export type GoodPriceShopInput = z.infer<typeof GoodPriceShopInputSchema>;
+export type GoodPriceShopOutput = z.infer<typeof GoodPriceShopOutputSchema>;

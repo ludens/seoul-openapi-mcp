@@ -111,8 +111,8 @@ export function registerAirQualityByDistrictTool(
 Use this for current district-level Seoul air quality, including integrated air-quality index, grade, decisive pollutant, NO2, O3, CO, SO2, PM-10, and PM-2.5.
 
 Args:
-  - districtCode: optional MSRSTN_PBADMS_CD filter from MSRSTN_PBADMS_CD.csv, for example 111121 for 중구 or 111261 for 강남구
-  - districtName: optional district name from MSRSTN_PBADMS_CD.csv, for example 중구 or 강남구; converted to districtCode before request
+  - districtCode: optional MSRSTN_PBADMS_CD filter from apis/AirQualityByDistrict/MSRSTN_PBADMS_CD.csv, for example 111121 for 중구 or 111261 for 강남구
+  - districtName: optional district name from apis/AirQualityByDistrict/MSRSTN_PBADMS_CD.csv, for example 중구 or 강남구; converted to districtCode before request
 
 Returns structured JSON with the fixed service name, fixed latest-data request range 1-25, optional district code/name, extracted row array, and raw Seoul OpenAPI response data.`,
       inputSchema: AirQualityByDistrictInputShape,
