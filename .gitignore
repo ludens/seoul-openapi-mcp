@@ -4,7 +4,7 @@ node_modules/
 
 # Build and test outputs
 dist/
-coverage/
+*.tgz
 
 # Local environment and logs
 .env
