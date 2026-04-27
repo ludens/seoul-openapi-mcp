@@ -14,10 +14,12 @@ export function createSeoulOpenApiMcpServer(config: AppConfig): McpServer {
 
   const client = new SeoulOpenApiClient({
     apiKey: config.seoulOpenApi.apiKey,
+    apiKeyName: "SEOUL_OPENAPI_KEY",
     baseUrl: AIR_QUALITY_OPENAPI_BASE_URL,
   });
   const subwayClient = new SeoulOpenApiClient({
     apiKey: config.seoulOpenApi.subwayApiKey,
+    apiKeyName: "SEOUL_SUBWAY_OPENAPI_KEY",
     baseUrl: SUBWAY_OPENAPI_BASE_URL,
     minStartIndex: 0,
   });

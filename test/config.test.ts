@@ -18,15 +18,25 @@ describe("loadConfig", () => {
     });
   });
 
-  test("throws an actionable error when API key is missing", () => {
-    expect(() => loadConfig({ SEOUL_SUBWAY_OPENAPI_KEY: "subway123" })).toThrow(
-      "Set SEOUL_OPENAPI_KEY before starting seoul-openapi-mcp.",
-    );
+  test("allows Seoul OpenAPI keys to be omitted at server startup", () => {
+    const config = loadConfig({});
+
+    expect(config).toEqual({
+      seoulOpenApi: {},
+    });
   });
 
-  test("throws an actionable error when subway API key is missing", () => {
-    expect(() => loadConfig({ SEOUL_OPENAPI_KEY: "abc123" })).toThrow(
-      "Set SEOUL_SUBWAY_OPENAPI_KEY before starting seoul-openapi-mcp.",
-    );
+  test("trims optional Seoul OpenAPI key values when present", () => {
+    const config = loadConfig({
+      SEOUL_OPENAPI_KEY: " abc123 ",
+      SEOUL_SUBWAY_OPENAPI_KEY: " subway123 ",
+    });
+
+    expect(config).toEqual({
+      seoulOpenApi: {
+        apiKey: "abc123",
+        subwayApiKey: "subway123",
+      },
+    });
   });
 });

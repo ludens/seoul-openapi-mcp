@@ -1,5 +1,6 @@
 export interface SeoulOpenApiClientOptions {
-  apiKey: string;
+  apiKey?: string | undefined;
+  apiKeyName?: string;
   baseUrl: string;
   minStartIndex?: number;
   fetch?: typeof fetch;
@@ -21,13 +22,15 @@ export type JsonValue =
   | { [key: string]: JsonValue };
 
 export class SeoulOpenApiClient {
-  readonly #apiKey: string;
+  readonly #apiKey: string | undefined;
+  readonly #apiKeyName: string;
   readonly #baseUrl: string;
   readonly #minStartIndex: number;
   readonly #fetch: typeof fetch;
 
   constructor(options: SeoulOpenApiClientOptions) {
     this.#apiKey = options.apiKey;
+    this.#apiKeyName = options.apiKeyName ?? "SEOUL_OPENAPI_KEY";
     this.#baseUrl = options.baseUrl.replace(/\/+$/, "");
     this.#minStartIndex = options.minStartIndex ?? 1;
     this.#fetch = options.fetch ?? fetch;
@@ -47,6 +50,12 @@ export class SeoulOpenApiClient {
     if (!/^[A-Za-z0-9_]+$/.test(options.serviceName)) {
       throw new Error(
         "serviceName must contain only letters, numbers, and underscores",
+      );
+    }
+
+    if (!this.#apiKey) {
+      throw new Error(
+        `Set ${this.#apiKeyName} before running this Seoul OpenAPI tool.`,
       );
     }
 

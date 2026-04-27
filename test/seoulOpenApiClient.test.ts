@@ -52,4 +52,24 @@ describe("SeoulOpenApiClient", () => {
       "http://swopenapi.seoul.go.kr/api/subway/test-key/json/realtimeStationArrival/0/5/%EC%84%9C%EC%9A%B8/",
     );
   });
+
+  test("rejects requests when the required API key is not configured", async () => {
+    const client = new SeoulOpenApiClient({
+      baseUrl: "http://openapi.seoul.go.kr:8088",
+      apiKeyName: "SEOUL_OPENAPI_KEY",
+      fetch: async () => {
+        throw new Error("fetch should not be called");
+      },
+    });
+
+    await expect(
+      client.fetchJson({
+        serviceName: "SearchParkInfoService",
+        startIndex: 1,
+        endIndex: 5,
+      }),
+    ).rejects.toThrow(
+      "Set SEOUL_OPENAPI_KEY before running this Seoul OpenAPI tool.",
+    );
+  });
 });
