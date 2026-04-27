@@ -7,10 +7,10 @@
 패키지를 설치하지 않고 `npx`로 실행합니다.
 
 ```bash
-SEOUL_OPENAPI_KEY=발급받은_일반_인증키 SEOUL_SUBWAY_OPENAPI_KEY=발급받은_지하철_인증키 npx seoul-openapi-mcp
+npx seoul-openapi-mcp
 ```
 
-`SEOUL_OPENAPI_KEY`에는 일반 서울 열린데이터광장 인증키를 넣고, `SEOUL_SUBWAY_OPENAPI_KEY`에는 지하철 OpenAPI 호스트용 인증키를 넣습니다.
+API Key 없이도 서버는 시작할 수 있습니다. OpenAPI를 호출하는 도구를 사용할 때만 해당 인증키가 필요합니다. `SEOUL_OPENAPI_KEY`에는 일반 서울 열린데이터광장 인증키를 넣고, `SEOUL_SUBWAY_OPENAPI_KEY`에는 지하철 OpenAPI 호스트용 인증키를 넣습니다.
 
 ## MCP 클라이언트 설정 예시
 
@@ -21,23 +21,21 @@ MCP 클라이언트 설정에 아래 서버를 추가합니다. `command`는 `np
   "mcpServers": {
     "seoul-openapi": {
       "command": "npx",
-      "args": ["-y", "seoul-openapi-mcp"],
-      "env": {
-        "SEOUL_OPENAPI_KEY": "발급받은_일반_인증키",
-        "SEOUL_SUBWAY_OPENAPI_KEY": "발급받은_지하철_인증키"
-      }
+      "args": ["-y", "seoul-openapi-mcp"]
     }
   }
 }
 ```
 
+OpenAPI 호출 도구를 사용할 경우에만 `env`에 필요한 키를 추가합니다.
+
 ## 제공 도구
 
-| 도구 | 설명 | 주요 입력 |
-| --- | --- | --- |
-| `seoul_get_air_quality_by_district` | `ListAirQualityByDistrictService`에서 서울시 실시간 자치구별 최신 대기환경 현황을 조회합니다. | 선택 `districtCode`, 선택 `districtName` |
-| `seoul_get_subway_realtime_station_arrival` | `realtimeStationArrival`에서 서울시 지하철역 실시간 도착정보를 조회합니다. | 필수 `stationName`, 선택 `startIndex`, 선택 `endIndex` |
-| `seoul_search_good_price_shops` | 저장소에 포함된 static JSON에서 서울 착한가격업소와 상품 가격을 검색합니다. API를 호출하지 않습니다. | 선택 `query`, `districtName`, `industryCode`, `industryName`, `itemName`, `maxItemPrice`, `limit`, `offset` |
+| 도구 | API Key | 설명 | 주요 입력 |
+| --- | --- | --- | --- |
+| `seoul_get_air_quality_by_district` | 필요: `SEOUL_OPENAPI_KEY` | `ListAirQualityByDistrictService`에서 서울시 실시간 자치구별 최신 대기환경 현황을 조회합니다. | 선택 `districtCode`, 선택 `districtName` |
+| `seoul_get_subway_realtime_station_arrival` | 필요: `SEOUL_SUBWAY_OPENAPI_KEY` | `realtimeStationArrival`에서 서울시 지하철역 실시간 도착정보를 조회합니다. | 필수 `stationName`, 선택 `startIndex`, 선택 `endIndex` |
+| `seoul_search_good_price_shops` | 불필요 | 저장소에 포함된 static JSON에서 서울 착한가격업소와 상품 가격을 검색합니다. API를 호출하지 않습니다. | 선택 `query`, `districtName`, `industryCode`, `industryName`, `itemName`, `maxItemPrice`, `limit`, `offset` |
 
 ## 로컬 개발
 
@@ -49,7 +47,7 @@ cp .env.example .env
 pnpm dev
 ```
 
-`.env`의 `SEOUL_OPENAPI_KEY`와 `SEOUL_SUBWAY_OPENAPI_KEY`에 호스트별 인증키를 넣습니다.
+OpenAPI 호출 도구를 테스트하려면 `.env`의 `SEOUL_OPENAPI_KEY`와 `SEOUL_SUBWAY_OPENAPI_KEY`에 호스트별 인증키를 넣습니다. static JSON 기반 도구만 사용할 때는 인증키가 필요 없습니다.
 
 검증:
 
