@@ -1,6 +1,6 @@
 {
   "name": "seoul-openapi-mcp",
-  "version": "2026.427.1",
+  "version": "2026.427.2",
   "description": "MCP server for Seoul Open Data OpenAPI services.",
   "type": "module",
   "packageManager": "pnpm@10.33.0",
