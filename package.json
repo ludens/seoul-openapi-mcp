@@ -27,6 +27,7 @@
   "files": [
     "dist",
     "data/PriceModelStore/*.json",
+    "data/SeoulLibraryTimeInfo/*.json",
     "README.md"
   ],
   "scripts": {

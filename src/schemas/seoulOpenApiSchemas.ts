@@ -315,3 +315,76 @@ export const GoodPriceShopOutputSchema = z.object({
 
 export type GoodPriceShopInput = z.infer<typeof GoodPriceShopInputSchema>;
 export type GoodPriceShopOutput = z.infer<typeof GoodPriceShopOutputSchema>;
+
+export const LibraryTimeInfoInputShape = {
+  query: z
+    .string()
+    .trim()
+    .min(1)
+    .optional()
+    .describe(
+      "Optional keyword matched against library name, address, district name, closed-day text, and phone number.",
+    ),
+  libraryName: z
+    .string()
+    .trim()
+    .min(1)
+    .optional()
+    .describe("Optional library name filter. Example: 도곡정보문화도서관."),
+  districtName: AirQualityDistrictNameSchema.optional().describe(
+    "Optional Seoul district name filter. Examples: 강남구, 강동구, 종로구.",
+  ),
+  closedDay: z
+    .string()
+    .trim()
+    .min(1)
+    .optional()
+    .describe("Optional regular closed-day keyword. Examples: 월요일, 법정공휴일, 휴관중."),
+  limit: z
+    .number()
+    .int()
+    .min(1)
+    .max(2000)
+    .default(20)
+    .describe("Maximum number of libraries to return. Defaults to 20."),
+  offset: z
+    .number()
+    .int()
+    .min(0)
+    .default(0)
+    .describe("Number of matched libraries to skip for pagination. Defaults to 0."),
+};
+
+export const LibraryTimeInfoInputSchema = z
+  .object(LibraryTimeInfoInputShape)
+  .strict();
+
+export const LibraryTimeInfoRowSchema = z.object({
+  librarySeqNo: z.number().int().describe("도서관 일련번호입니다."),
+  name: z.string().describe("도서관명입니다."),
+  districtCode: z.string().describe("구 코드입니다."),
+  districtName: z.string().describe("구명입니다."),
+  address: z.string().describe("주소입니다."),
+  regularClosedDay: z
+    .string()
+    .describe("정기 휴관일입니다. 원본 값이 null이면 빈 문자열입니다."),
+  phone: z.string().describe("전화번호입니다. 원본 값이 null이면 빈 문자열입니다."),
+  latitude: z.number().nullable().describe("위도입니다."),
+  longitude: z.number().nullable().describe("경도입니다."),
+});
+
+export const LibraryTimeInfoOutputSchema = z.object({
+  serviceName: z
+    .literal("SeoulLibraryTimeInfo")
+    .describe("참조한 서울 열린데이터 서비스명입니다."),
+  dataSource: z.literal("static-json").describe("API 호출 없이 static JSON을 참조합니다."),
+  datasetDate: z.literal("2026-05-01").describe("참조 JSON 파일 최종수정일입니다."),
+  totalCount: z.number().int().describe("페이지 적용 전 매칭 도서관 수입니다."),
+  returnedCount: z.number().int().describe("반환한 도서관 수입니다."),
+  limit: z.number().int().describe("요청 limit입니다."),
+  offset: z.number().int().describe("요청 offset입니다."),
+  rows: z.array(LibraryTimeInfoRowSchema).describe("검색된 도서관 이용시간/휴관일 정보입니다."),
+});
+
+export type LibraryTimeInfoInput = z.infer<typeof LibraryTimeInfoInputSchema>;
+export type LibraryTimeInfoOutput = z.infer<typeof LibraryTimeInfoOutputSchema>;
