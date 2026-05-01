@@ -1,6 +1,6 @@
 {
   "name": "seoul-openapi-mcp",
-  "version": "2026.427.2",
+  "version": "2026.501.0",
   "description": "MCP server for Seoul Open Data OpenAPI services.",
   "type": "module",
   "packageManager": "pnpm@10.33.0",
@@ -27,6 +27,7 @@
   "files": [
     "dist",
     "data/PriceModelStore/*.json",
+    "data/SeoulLibraryTimeInfo/*.json",
     "README.md"
   ],
   "scripts": {

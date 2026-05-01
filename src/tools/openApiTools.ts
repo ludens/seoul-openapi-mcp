@@ -2,6 +2,7 @@ import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { SeoulOpenApiClient } from "../services/seoulOpenApiClient.js";
 import { registerAirQualityByDistrictTool } from "./airQualityByDistrictTool.js";
 import { registerGoodPriceShopsTool } from "./goodPriceShopsTool.js";
+import { registerLibraryTimeInfoTool } from "./libraryTimeInfoTool.js";
 import { registerSubwayRealtimeStationArrivalTool } from "./subwayRealtimeStationArrivalTool.js";
 
 export function registerOpenApiTools(
@@ -12,4 +13,5 @@ export function registerOpenApiTools(
   registerAirQualityByDistrictTool(server, client);
   registerSubwayRealtimeStationArrivalTool(server, subwayClient);
   registerGoodPriceShopsTool(server);
+  registerLibraryTimeInfoTool(server);
 }
