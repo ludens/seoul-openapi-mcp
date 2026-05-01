@@ -36,6 +36,7 @@ OpenAPI 호출 도구를 사용할 경우에만 `env`에 필요한 키를 추가
 | `seoul_get_air_quality_by_district` | 필요: `SEOUL_OPENAPI_KEY` | `ListAirQualityByDistrictService`에서 서울시 실시간 자치구별 최신 대기환경 현황을 조회합니다. | 선택 `districtCode`, 선택 `districtName` |
 | `seoul_get_subway_realtime_station_arrival` | 필요: `SEOUL_SUBWAY_OPENAPI_KEY` | `realtimeStationArrival`에서 서울시 지하철역 실시간 도착정보를 조회합니다. | 필수 `stationName`, 선택 `startIndex`, 선택 `endIndex` |
 | `seoul_search_good_price_shops` | 불필요 | 저장소에 포함된 static JSON에서 서울 착한가격업소와 상품 가격을 검색합니다. API를 호출하지 않습니다. | 선택 `query`, `districtName`, `industryCode`, `industryName`, `itemName`, `maxItemPrice`, `limit`, `offset` |
+| `seoul_search_library_time_info` | 불필요 | 저장소에 포함된 static JSON에서 서울시 도서관 이용시간 및 휴관일 정보 서비스를 검색합니다. 현재 포함 JSON은 정기 휴관일, 위치, 연락처 필드만 제공합니다. | 선택 `query`, `libraryName`, `districtName`, `closedDay`, `limit`, `offset` |
 
 ## 로컬 개발
 
@@ -88,3 +89,4 @@ node dist/index.js
 - `apis/AirQualityByDistrict/`: 서울시 실시간 자치구별 대기환경 현황 문서와 코드표
 - `apis/RealtimeStationArrival/`: 서울시 지하철 실시간 도착정보 문서와 역 정보
 - `data/PriceModelStore/`: 착한가격업소 현황과 상품목록 static JSON
+- `data/SeoulLibraryTimeInfo/`: 도서관 이용시간 및 휴관일 정보 static JSON
